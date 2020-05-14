@@ -41,23 +41,23 @@ int main()
     
     switch(choice)//First switch
     {
-        case '1': //Student
+        case '1': //Sinh vien
         {
             addNewStudent();
             break;
         }
-        case '2': //Delete a Student
+        case '2': //Xoa sinh vien
         {
             deleteAStudent();
             break;
         }
-        case '3': //Find A Student
+        case '3': //Tim sinh vien
         {
             findAStudent();
             break;
         }
         default:
-            cout << "Invalid choice\n";
+            cout << "Khong ton tai\n";
             choice = 0;
     }
     
