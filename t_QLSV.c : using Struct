@@ -1,0 +1,152 @@
+QUAN LY SINH VIEN
+
+//Headers inclusion
+#include <iostream>
+#include <fstream>
+#include <string>
+
+
+using namespace std;
+
+//Structure defining
+struct student
+{
+    string fname;//for student Tên
+    string lname;//for student Họ
+    string studentID;//for MSSV
+}studentData;//Variable of student type
+
+void addNewStudent();
+void deleteAStudent();
+void findAStudent();
+void disPlayMenu();
+
+///////////////////////////////////////////////////
+//Main function
+
+int main()
+{
+    char choice;//for getting choice
+    string find;//for sorting
+    string srch;
+    
+    //Level 1-Display process
+    disPlayMenu();
+    cin>>choice;
+    while (choice != '1' && choice != '2' && choice != '3')
+    {
+        std::cout << "So khong co ton tai: " << choice << " Select '1' or '2' or '3' " << std::endl;
+        std::cin >> choice;
+    }
+    
+    switch(choice)//First switch
+    {
+        case '1': //Student
+        {
+            addNewStudent();
+            break;
+        }
+        case '2': //Delete a Student
+        {
+            deleteAStudent();
+            break;
+        }
+        case '3': //Find A Student
+        {
+            findAStudent();
+            break;
+        }
+        default:
+            cout << "Invalid choice\n";
+            choice = 0;
+    }
+    
+    return 0;
+}
+
+/*****************************************************************************
+ ** Functions implementations
+ ******************************************************************************/
+
+void addNewStudent()
+{
+    cout <<"Nhap MSSV: " << endl;
+    cin >> studentData.studentID;
+    cout <<"Nhap ten sinh vien:" << endl;
+    cin >> studentData.fname;
+    cout <<"Nhap ho sinh vien:" << endl;
+    cin >> studentData.lname;
+    fstream myfile;
+    myfile.open("dataStudent.txt", ios::app | ios::out);
+    myfile << studentData.studentID << ' ' << studentData.fname << ' ' << studentData.lname << '\n'; // <--
+    myfile.close();
+    cout <<"Sinh vien da duoc cap nhat"<< endl;
+    //closing the file
+    myfile.close();
+}//addStudent
+
+void findAStudent()
+{
+    string search;
+    ifstream myFile;
+    string line;
+    
+    myFile.open("dataStudent.txt");
+    
+    if(!myFile){
+        cout << "Khong the mo file" << endl;
+        exit(1);
+    }
+    cout << "Nhap MSSV hoac Ten sinh vien de tim kiem: ";
+    cin >>search;
+    
+    size_t pos;
+    while(myFile.good())
+    {
+        getline(myFile,line); // get line from file
+        pos=line.find(search); // search
+        if(pos!=string::npos) // string::npos is returned if string is not found
+        {
+            cout <<"MSSV va Ho ten sinh vien :" << " " << line << '\n';
+        }
+        else
+            cout <<"Khong the tim thay du lieu sinh vien nay" << '\n';
+        break;
+    }
+    myFile.close();
+    
+}
+
+void deleteAStudent()
+{
+    string line, name;
+    cout << "Vui long nhap ten ho so ban muon xoa: ";
+    cin >> name;
+    ifstream myfile;
+    myfile.open("dataStudent.txt");
+    ofstream temp;
+    temp.open("temp.txt");
+    while (getline(myfile, line))
+    {
+        if (line.substr(0, name.size()) != name)
+            temp << line << endl;
+    }
+    cout << "Ho so voi ten " << name << " da bi xoa " << endl;
+    myfile.close();
+    temp.close();
+    remove("dataStudent.txt");
+    rename("temp.txt", "dataStudent.txt");
+}
+void disPlayMenu()
+{
+    //Level 1-Display process
+    cout<<"\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\";
+    cout<<"\n\n\t\t\tQUAN LY SINH VIEN\n\n";
+    cout<<"\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\";
+    cout<<"\n\n\t\t\t\t\tMAIN SCREEN\n\n";
+    cout<<"Enter your choice: "<<endl;
+    cout<<"1.Nhap them sinh vien moi "<<endl;
+    cout<<"2.Xoa du lieu sinh vien hien co"<<endl;
+    cout<<"3.Tim sinh vien hien co"<<endl;
+    
+}
